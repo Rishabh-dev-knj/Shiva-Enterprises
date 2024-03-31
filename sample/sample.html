@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filter Menu</title>
+<style>
+  /* Styles for demonstration purpose */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .filter-menu {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .filter-menu button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .filter-menu button:hover {
+    background-color: #0056b3;
+  }
+  .filter-menu button.active {
+    background-color: #0056b3;
+  }
+  .items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .item {
+    width: calc(33.33% - 20px);
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="filter-menu">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="iron">Iron</button>
+    <button class="filter-btn" data-filter="steel">Steel</button>
+  </div>
+  
+  <div class="items-container">
+    <div class="item iron" type="iron">Iron item 1</div>
+    <div class="item iron" type="iron">Iron item 2</div>
+    <div class="item steel" type="steel">Steel item 1</div>
+    <div class="item steel" type="steel">Steel item 2</div>
+    <div class="item iron" type="iron">Iron item 3</div>
+    <div class="item steel" type="steel">Steel item 3</div>
+  </div>
+</div>
+
+<script>
+  // JavaScript code for filtering items
+  const filterButtons = document.querySelectorAll('.filter-btn');
+const items = document.querySelectorAll('.item');
+
+filterButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    filterButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    const filterValue = button.getAttribute('data-filter');
+
+    items.forEach(item => {
+      item.style.display = 'none';
+      const itemType = item.getAttribute('type');
+      if (filterValue === 'all' || itemType.includes(filterValue)) {
+        item.style.display = 'block';
+      }
+    });
+  });
+});
+
+</script>
+
+</body>
+</html>

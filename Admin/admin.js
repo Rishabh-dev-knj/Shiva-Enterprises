@@ -17,16 +17,17 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
-async function addImageData(uid, name, imageUrl, rate, material, type, description) {
+async function addImageData(uid, title, imageUrl, rate, material, Keywords, description) {
     try {
       const docRef = await addDoc(collection(db, "images"), {
         uid: uid,
-        title: name,
+        title: title,
         imageUrl: imageUrl,
         rate: rate,
         material: material,
-        type: type,
-        description: description
+        // type: type,
+        description: description,
+        keyword: Keywords
       });
       console.log("Image data added with ID: ", docRef.id);
     } catch (e) {
@@ -39,14 +40,59 @@ async function addImageData(uid, name, imageUrl, rate, material, type, descripti
   document.getElementById("imageForm").addEventListener('submit', (e)=>{
         e.preventDefault();
         const uid = "Rishabh    ";
-        const name = document.getElementById("name").value;
+        const title = document.getElementById("title").value;
         const imageUrl = document.getElementById("imageUrl").value;
         const rate = document.getElementById("rate").value;
         const material = document.getElementById("material").value;
-        const type = document.getElementById("type").value;
-        const description = document.getElementById("description").value;
-    
+        // const type = document.getElementById("type").value;
+        const description = document.getElementById("description").value
+        const selectedKeywords = document.querySelectorAll('.selected-keywords .keyword');
+
+         const keywordsCount = selectedKeywords.length;
+
+         // Display selected keywords and count
+    const selectedKeywordsList = [];
+    let keywords ="";
+    selectedKeywords.forEach(span => {
+        selectedKeywordsList.push(span.querySelector('span').textContent);
+        keywords=keywords+" " +span.querySelector('span').textContent;
+    });
+    console.log("Selected Keywords: ", selectedKeywordsList);
+    console.log("Selected: ", keywords);
+    // console.log("Keywords Count: ", keywordsCount);
+
+    // Reset form and keyword display
+    document.getElementById("imageForm").reset();
+    selectedKeywords.innerHTML = "";
+      
         // Call function to add image data to Firestore
-        addImageData(uid, name, imageUrl, rate, material, type, description);
+        addImageData(uid, title, imageUrl, rate, material, keywords, description);
         document.getElementById("imageForm").reset();
   })
+
+  // keyword selecting js------------------------------------
+  document.addEventListener('DOMContentLoaded', function() {
+    const selectedKeywords = document.getElementById('selectedKeywords');
+    const keywordOptions = document.getElementById('keywordOptions');
+    const addKeywordBtn = document.getElementById('addKeywordBtn');
+    
+    addKeywordBtn.addEventListener('click', function() {
+      const selectedKeyword = keywordOptions.value;
+      if (selectedKeyword) {
+        const keywordElement = document.createElement('div');
+        keywordElement.classList.add('keyword');
+        keywordElement.innerHTML = `
+          <span>${selectedKeyword}</span>
+          <button>X</button>
+        `;
+        selectedKeywords.appendChild(keywordElement);
+        
+        // Remove keyword when X button is clicked
+        keywordElement.querySelector('button').addEventListener('click', function() {
+          selectedKeywords.removeChild(keywordElement);
+        });
+      }
+    });
+  });
+
+

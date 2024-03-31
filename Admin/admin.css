@@ -15,7 +15,7 @@ form {
     max-width: 500px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -26,7 +26,8 @@ label {
     font-weight: bold;
 }
 
-input[type="text"] {
+input[type="text"],
+select {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -47,5 +48,86 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* keyword css------------------------------------- */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    color: #333;
+}
+
+.keyword-section {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.selected-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.keyword {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.keyword span {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.keyword span:hover {
+    text-decoration: underline;
+}
+
+.keyword-select {
+    display: flex;
+    align-items: center;
+}
+
+.keyword-select select {
+    width: 200px;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.keyword-select button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.keyword-select button:hover {
     background-color: #0056b3;
 }

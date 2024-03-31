@@ -13,8 +13,8 @@
         <!-- <label for="uid">UID:</label>
         <input type="text" id="uid" name="uid"><br><br> -->
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name"><br><br>
+        <label for="name">Title:</label>
+        <input type="text" id="title" name="title"><br><br>
 
         <label for="imageUrl">Image URL:</label>
         <input type="text" id="imageUrl" name="imageUrl"><br><br>
@@ -24,15 +24,34 @@
 
         <label for="material">Material:</label>
         <input type="text" id="material" name="material"><br><br>
-
-        <label for="type">Type:</label>
-        <input type="text" id="type" name="type"><br><br>
+        
+        <label for="keywords">Keywords:</label>
+        <div class="keyword-section">
+            <div class="selected-keywords" id="selectedKeywords"></div>
+            <div class="keyword-select">
+              <select id="keywordOptions">
+                <option value="msgate">M/S Gate</option>
+                <option value="mssingledoor">M/S Single door</option>
+                <option value="msrailing">M/S Railing</option>
+                <option value="msgrill">M/S Grill</option>
+                <option value="ssgate">SS Gate</option>
+                <option value="sssingledoor">SS Single door</option>
+                <option value="ssrailing">SS Railing</option>
+                <option value="ssgrill">SS Grill</option>
+              </select>
+              <button id="addKeywordBtn" type="button">Add Keyword</button>
+            </div>
+          </div>
 
         <label for="description">Description:</label>
         <input type="text" id="description" name="description"><br><br>
 
         <button type="submit" id="send">Submit</button>
     </form>
+    <!-- <script>
+       
+
+    </script> -->
     <script src="admin.js" type="module"></script>
 </body>
 </html>

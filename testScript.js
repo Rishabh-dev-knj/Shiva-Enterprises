@@ -10,76 +10,76 @@ const firebaseConfig = {
     messagingSenderId: "1067910627173",
     appId: "1:1067910627173:web:ff3f9ac4db01d9603f2b8c",
     measurementId: "G-BDC7WBZLQS"
-  };    
-  
- 
+};
+
+
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 var imageData = [
     {
-        name: "Petals of roses", rate:"80", material:"iron",
+        name: "Petals of roses", rate: "80", material: "iron",
         image: "https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?q=80&w=3786&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         // id: 
     },
     {
-        name: "Animals of town", rate:"81", material:"iron",
+        name: "Animals of town", rate: "81", material: "iron",
         image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=2688&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-        name: "the crowd of city", rate:"82", material:"iron",
+        name: "the crowd of city", rate: "82", material: "iron",
         image: "https://images.unsplash.com/photo-1517732306149-e8f829eb588a?q=80&w=3872&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-        name: "fruits of planet", rate:"83", material:"iron",
+        name: "fruits of planet", rate: "83", material: "iron",
         image: "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?q=80&w=3764&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-        name: "orange peeled", rate:"84", material:"iron",
+        name: "orange peeled", rate: "84", material: "iron",
         image: "https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=3337&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-        name: "web design", rate:"85", material:"iron",
+        name: "web design", rate: "85", material: "iron",
         image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-        name: "apple juice", rate:"86", material:"iron",
+        name: "apple juice", rate: "86", material: "iron",
         image: "https://images.unsplash.com/photo-1576673442511-7e39b6545c87?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-        name: "Alexander Hipp", rate:"87", material:"iron",
+        name: "Alexander Hipp", rate: "87", material: "iron",
         image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
     },
     {
-        name: "Omotayo Samuel", rate:"88", material:"iron",
+        name: "Omotayo Samuel", rate: "88", material: "iron",
         image: "https://images.pexels.com/photos/18824370/pexels-photo-18824370/free-photo-of-portrait-of-woman-wearing-colorful-outfit.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
     },
     {
-        name: "artawkrn", rate:"89", material:"iron",
+        name: "artawkrn", rate: "89", material: "iron",
         image: "https://images.pexels.com/photos/18250922/pexels-photo-18250922/free-photo-of-ornamented-building-corner.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-        name: "Don't Know", rate:"90", material:"iron",
+        name: "Don't Know", rate: "90", material: "iron",
         image: "https://images.pexels.com/photos/17542964/pexels-photo-17542964/free-photo-of-girl-with-camera.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load   "
     },
     {
-        name: "Purple Flower", rate:"91", material:"iron",
+        name: "Purple Flower", rate: "91", material: "iron",
         image: "https://images.pexels.com/photos/17685076/pexels-photo-17685076/free-photo-of-a-field-of-blue-flowers-and-grass-with-a-blue-sky.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
     },
     {
-        name: "Candles", rate:"92", material:"iron",
+        name: "Candles", rate: "92", material: "iron",
         image: "https://images.pexels.com/photos/16577843/pexels-photo-16577843/free-photo-of-chamomiles-in-vase-and-candle-on-windowsill.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
     },
     {
-        name: "Dinner Corner", rate:"93", material:"iron",
+        name: "Dinner Corner", rate: "93", material: "iron",
         image: "https://images.unsplash.com/photo-1707303822352-2cb2faee9d0c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8"
     },
     {
-        name: "Nasa Hable Scope", rate:"94", material:"iron",
+        name: "Nasa Hable Scope", rate: "94", material: "iron",
         image: "https://images.unsplash.com/photo-1707653057692-7669af94b9ee?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-        name: "NEOM", rate:"95", material:"iron",
+        name: "NEOM", rate: "95", material: "iron",
         image: "https://images.unsplash.com/photo-1682685797795-5640f369a70a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D"
     },
 ]
@@ -101,7 +101,7 @@ async function getImageData() {
         imageDataNew.push(doc.data());
     });
 
-   
+
 
     return imageDataNew;
 }
@@ -110,7 +110,7 @@ async function getImageData() {
 // Call the function to get the image data
 getImageData().then((imageDataNew) => {
     console.log('Image data:', imageDataNew);
-showTheCards();
+    showTheCards();
 
 }).catch((error) => {
     console.error('Error fetching image data:', error);
@@ -136,3 +136,74 @@ function showTheCards() {
     document.querySelector(".container")
         .innerHTML = clutter;
 }
+
+// Function to filter images based on material type and display them
+function filterImagesByMaterial(filterValue) {
+    var clutter = "";
+    imageDataNew.forEach(function (obj) {
+        if (obj.keyword.toLowerCase().includes(filterValue.toLowerCase())) {
+            // itemType.includes(filterValue)
+            clutter += `<div class="box">
+                            <div class="inner-box">
+                                <img class="cursor-pointer" src="${obj.imageUrl}" alt="image" onclick="openFullScreen('${obj.imageUrl}', '${obj.title}', '${obj.rate}', '${obj.material}')">
+                                <div class="caption">
+                                    <div class="profile">Rishabh Sharma</div>
+                                    <i onclick="bookmark()" class="ri-bookmark-line"></i>
+                                </div>
+                            </div>
+                        </div>`;
+        }
+    });
+
+    document.querySelector(".container").innerHTML = clutter;
+}
+
+// Event listeners for filter buttons
+document.querySelectorAll('.filter-btn').forEach(function (button) {
+    button.addEventListener('click', function () {
+        // Remove 'active' class from all buttons
+        document.querySelectorAll('.filter-btn').forEach(function (btn) {
+            btn.classList.remove('active');
+        });
+        // Add 'active' class to the clicked button
+        button.classList.add('active');
+        
+        // Get the filter value
+        const filterValue = button.getAttribute('data-filter');
+
+        // Filter images based on the selected material type
+        if (filterValue === 'all') {
+            // Show all images
+            showTheCards();
+        } else {
+            // Filter images based on material type
+            filterImagesByMaterial(filterValue);
+        }
+    });
+});
+
+// Initial call to display all images when the page loads
+
+
+// -----------------------------filter-menu-----------------------------
+// -----------------------------filter-menu-----------------------------
+
+// const filterButtons = document.querySelectorAll('.filter-btn');
+// // const items = document.querySelectorAll('.item');
+
+// filterButtons.forEach(button => {
+//     button.addEventListener('click', () => {
+//         filterButtons.forEach(btn => btn.classList.remove('active'));
+//         button.classList.add('active');
+//         const filterValue = button.getAttribute('data-filter');
+
+//         imageDataNew.forEach(item => {
+//             console.log("Item"+ item.title)
+//             document.querySelectorAll(".box").style.display = 'none';
+//             // const itemType = item.getAttribute('type');
+//             // if (filterValue === 'all' || itemType.includes(filterValue)) {
+//             //     item.style.display = 'block';
+//             // }
+//         });
+//     });
+// });
