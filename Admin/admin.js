@@ -1,5 +1,9 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js';
 import { getFirestore, getDocs, collection, addDoc, orderBy, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-storage.js';
+// import { getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-storage.js';
+
+
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -16,8 +20,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
 
-async function addImageData(uid, title, imageUrl, rate, material, Keywords, description) {
+async function addImageData(uid, title, imageUrl, rate, material, Keywords) {
     try {
       const docRef = await addDoc(collection(db, "images"), {
         uid: uid,
@@ -26,7 +31,7 @@ async function addImageData(uid, title, imageUrl, rate, material, Keywords, desc
         rate: rate,
         material: material,
         // type: type,
-        description: description,
+        // description: description,
         keyword: Keywords
       });
       console.log("Image data added with ID: ", docRef.id);
@@ -36,39 +41,65 @@ async function addImageData(uid, title, imageUrl, rate, material, Keywords, desc
   }
   
   // Example usage:
-  
-  document.getElementById("imageForm").addEventListener('submit', (e)=>{
-        e.preventDefault();
-        const uid = "Rishabh    ";
-        const title = document.getElementById("title").value;
-        const imageUrl = document.getElementById("imageUrl").value;
-        const rate = document.getElementById("rate").value;
-        const material = document.getElementById("material").value;
-        // const type = document.getElementById("type").value;
-        const description = document.getElementById("description").value
-        const selectedKeywords = document.querySelectorAll('.selected-keywords .keyword');
+  document.getElementById("imageForm").addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const uid = "Rishabh";
+    const title = document.getElementById("title").value;
+    const rate = document.getElementById("rate").value;
+    const material = document.getElementById("material").value;
+    const description = document.getElementById("description").value;
+    const selectedKeywords = document.querySelectorAll('.selected-keywords .keyword');
 
-         const keywordsCount = selectedKeywords.length;
+    // Check if URL or image upload is provided
+    const imageUrl = document.getElementById("imageUrl").value;
+    const imageFile = document.getElementById('imageUpload').files[0];
 
-         // Display selected keywords and count
-    const selectedKeywordsList = [];
-    let keywords ="";
-    selectedKeywords.forEach(span => {
-        selectedKeywordsList.push(span.querySelector('span').textContent);
-        keywords=keywords+" " +span.querySelector('span').textContent;
-    });
-    console.log("Selected Keywords: ", selectedKeywordsList);
-    console.log("Selected: ", keywords);
-    // console.log("Keywords Count: ", keywordsCount);
-
-    // Reset form and keyword display
-    document.getElementById("imageForm").reset();
-    selectedKeywords.innerHTML = "";
-      
-        // Call function to add image data to Firestore
-        addImageData(uid, title, imageUrl, rate, material, keywords, description);
+    if (imageUrl && !imageFile) {
+        // If URL is provided, directly add image data to Firestore
+        const keywords = getSelectedKeywords(selectedKeywords);
+        addImageData(uid, title, imageUrl, rate, material, keywords);
         document.getElementById("imageForm").reset();
-  })
+    } else if (imageFile && !imageUrl) {
+        // If image file is uploaded, upload it to storage and then add image data to Firestore
+        const keywords = getSelectedKeywords(selectedKeywords);
+        const downloadURL = await uploadImageAndGetData(imageFile, selectedKeywords);
+        addImageData(uid, title, downloadURL, rate, material, keywords);
+        document.getElementById("imageForm").reset();
+    } else {
+        alert('Please provide either an image URL or upload an image file.');
+    }
+});
+
+// Function to upload image to storage and get download URL
+async function uploadImageAndGetData(imageFile, selectedKeywords) {
+    const storageRef = ref(storage, 'images/' + imageFile.name);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    
+    return new Promise((resolve, reject) => {
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                // Handle progress
+            },
+            (error) => {
+                console.error('Error uploading image:', error);
+                reject(error);
+            },
+            async () => {
+                // Image uploaded successfully, get download URL
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                resolve(downloadURL);
+            }
+        );
+    });
+}
+
+// Function to get selected keywords as a comma-separated string
+function getSelectedKeywords(selectedKeywords) {
+    const selectedKeywordsList = Array.from(selectedKeywords).map(span => span.querySelector('span').textContent);
+    return selectedKeywordsList.join(', ');
+}
+
+
 
   // keyword selecting js------------------------------------
   document.addEventListener('DOMContentLoaded', function() {
@@ -95,4 +126,25 @@ async function addImageData(uid, title, imageUrl, rate, material, Keywords, desc
     });
   });
 
+   
+// checking and error other data in corresponding fields=====================
 
+  document.getElementById("imageUrl").addEventListener('input', function() {
+    const imageUrl = this.value;
+    const imageUpload = document.getElementById('imageUpload');
+
+    // If URL is filled, clear the image upload field
+    if (imageUrl) {
+        imageUpload.value = '';
+    }
+});
+
+document.getElementById("imageUpload").addEventListener('change', function() {
+    const imageUpload = this;
+    const imageUrl = document.getElementById('imageUrl');
+
+    // If an image is uploaded, clear the URL field
+    if (imageUpload.files && imageUpload.files[0]) {
+        imageUrl.value = '';
+    }
+});
