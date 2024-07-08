@@ -49,7 +49,7 @@ function showTheCards() {
         // console.log(obj);
         clutter += `<div class="box">
         <div class="inner-box">
-        <img class="cursor-pointer" src="${obj.imageUrl}" alt="image" onclick="openFullScreen('${obj.imageUrl}', '${obj.title}', '${obj.rate}', '${obj.material}')">
+        <img class="cursor-pointer" src="${obj.imageUrl}" alt="image" onclick="openFullScreen('${obj.imageUrl}', '${obj.title}', '${obj.rate}', '${obj.material}')"  loading="lazy">
         <div class="caption">
             <div class="profile">Rishabh Sharma</div>
            <i onclick="bookmark()" class="ri-bookmark-line"></i>
