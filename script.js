@@ -64,25 +64,49 @@ function showTheCards() {
 }
 
 // Function to filter images based on material type and display them
+// Function to filter images based on material type and display them
 function filterImagesByMaterial(filterValue) {
-    var clutter = "";
+    let clutter = "";
+
     imageData.forEach(function (obj) {
-        if (obj.keyword.toLowerCase().includes(filterValue.toLowerCase())) {
-            // itemType.includes(filterValue)
-            clutter += `<div class="box">
-                            <div class="inner-box">
-                                <img class="cursor-pointer" src="${obj.imageUrl}" alt="image" onclick="openFullScreen('${obj.imageUrl}', '${obj.title}', '${obj.rate}', '${obj.material}')">
-                                <div class="caption">
-                                    <div class="profile">Rishabh Sharma</div>
-                                    <i onclick="bookmark()" class="ri-bookmark-line"></i>
-                                </div>
-                            </div>
-                        </div>`;
+        if (!obj.keyword) {
+            console.warn("Keyword is undefined for the object:", obj);
+            return;
+        }
+
+        if (Array.isArray(obj.keyword)) {
+            // If 'keyword' is an array, check if any keyword matches the filter
+            const isMatch = obj.keyword.some(kw => kw.toLowerCase().includes(filterValue.toLowerCase()));
+
+            if (isMatch) {
+                clutter += generateCardHTML(obj);
+            }
+        } else if (typeof obj.keyword === "string") {
+            // If 'keyword' is a string, check directly
+            if (obj.keyword.toLowerCase().includes(filterValue.toLowerCase())) {
+                clutter += generateCardHTML(obj);
+            }
         }
     });
 
     document.querySelector(".container").innerHTML = clutter;
 }
+
+// Function to generate the card HTML
+function generateCardHTML(obj) {
+    return `
+        <div class="box">
+            <div class="inner-box">
+                <img class="cursor-pointer" src="${obj.imageUrl}" alt="image" onclick="openFullScreen('${obj.imageUrl}', '${obj.title}', '${obj.rate}', '${obj.material}')">
+                <div class="caption">
+                    <div class="profile">Rishabh Sharma</div>
+                    <i onclick="bookmark()" class="ri-bookmark-line"></i>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 
 // Event listeners for filter buttons
 document.querySelectorAll('.filter-btn').forEach(function (button) {
