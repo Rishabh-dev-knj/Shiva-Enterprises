@@ -4,80 +4,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Shiva Enterprises | Premium Fabrications</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
-    <link rel="stylesheet" href="features.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="navbar">
-        <div class="logo">
-            <h1>Shiva Enterprises</h1>
-        </div>
-    </div>
-    <div class="filter-menu">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="msgate">M/S Gate</button>
-        <button class="filter-btn" data-filter="mssingledoor">M/S Single door</button>
-        <button class="filter-btn" data-filter="msrailing">M/S Railing</button>
-        <button class="filter-btn" data-filter="msgrill">M/S Grill</button>
-        <button class="filter-btn" data-filter="ssgate">SS Gate</button>
-        <button class="filter-btn" data-filter="sssingledoor">SS Single door</button>
-        <button class="filter-btn" data-filter="ssrailing">SS Railing</button>
-        <button class="filter-btn" data-filter="ssgrill">SS Grill</button>
-       
-      </div>
-    <div class="posts">
-        <div class="overlay"></div>
-        <div class="content">
-            <div class="container" id="Rishabhpapa">
-                <!-- Image Content is displayed here! -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon"><i class="ri-shining-fill"></i></span>
+                <h1>Shiva Enterprises</h1>
+            </div>
+            <div class="nav-actions">
+                <a href="https://wa.me/918707087053?text=Hello%20Shiva%20Enterprises,%20I'm%20interested%20in%20your%20services." target="_blank" style="text-decoration: none;">
+                    <button class="contact-btn"><i class="ri-phone-line"></i><p>Contact Us</p></button>
+                </a>
             </div>
         </div>
-    </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Exquisite Metal Artistry</h2>
+                <p>Premium Gates, Railings, and Grills crafted with precision and passion.</p>
+            </div>
+        </section>
+
+        <section class="gallery-section">
+            <div class="filter-wrapper">
+                <div class="filter-menu">
+                    <button class="filter-btn active" data-filter="all">All Collection</button>
+                    <button class="filter-btn" data-filter="msgate">M/S Gate</button>
+                    <button class="filter-btn" data-filter="mssingledoor">Single Door</button>
+                    <button class="filter-btn" data-filter="msrailing">Railing</button>
+                    <button class="filter-btn" data-filter="msgrill">Grill</button>
+                    <button class="filter-btn" data-filter="ssgate">SS Gate</button>
+                    <button class="filter-btn" data-filter="ssrailing">SS Railing</button>
+                </div>
+            </div>
+
+            <div class="posts">
+                <div class="container" id="Rishabhpapa">
+                    <div class="loading-state" style="text-align: center; padding: 100px 0; color: var(--text-dim); column-span: all;">
+                        <i class="ri-loader-4-line ri-spin" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+                        <p>Loading your premium gallery...</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal -->
     <div id="modal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modal-image" src="" alt="Rishabh">
-        <div id="caption">
-            <div class="name"></div>
-            <div class="other">
-                <span id="rate"></span>
-                <span id="material"></span>
-                <span id="type"></span>
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <span class="close-btn">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image-wrapper">
+                    <img class="modal-content" id="modal-image" src="" alt="Enlarged view" style="display: none;">
+                    <video id="modal-video" src="" controls autoplay loop style="display: none; width: 100%; height: 100%; object-fit: contain;"></video>
+                </div>
+                <div id="caption" class="modal-details">
+                    <h3 class="name"></h3>
+                    <div class="specs">
+                        <div class="spec-item">
+                            <span class="label">Rate</span>
+                            <span id="rate" class="value"></span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="label">Material</span>
+                            <span id="material" class="value"></span>
+                        </div>
+                    </div>
+                    <button class="inquiry-btn">Enquire Now</button>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
-        function openFullScreen(imageSrc, name, rate, material) {
+        function openFullScreen(src, name, rate, material, id) {
+            const modal = document.getElementById("modal");
+            const modalImg = document.getElementById("modal-image");
+            const modalVid = document.getElementById("modal-video");
+            const caption = document.getElementById("caption");
 
-            var modal = document.getElementById("modal");
-            var modalImg = document.getElementById("modal-image");
-            var captionText = document.getElementById("caption");
+            const isVideo = src.toLowerCase().match(/\.(mp4|webm|ogg|mov)$/) || src.toLowerCase().includes('video');
 
-            modal.style.display = "block";
-            modalImg.src = imageSrc;
-            captionText.querySelector(".name").innerHTML = name;
-            captionText.querySelector("#rate").innerHTML = "Rate: " + rate;
-            captionText.querySelector("#material").innerHTML = "Material:" + material
-            // You can add more lines here to display additional information like material
+            if (isVideo) {
+                modalImg.style.display = "none";
+                modalVid.src = src;
+                modalVid.style.display = "block";
+                modalVid.play().catch(e => console.warn("Autoplay blocked or video error:", e));
+            } else {
+                modalVid.style.display = "none";
+                modalVid.pause();
+                modalImg.src = src;
+                modalImg.style.display = "block";
+            }
+
+            caption.querySelector(".name").textContent = name;
+            caption.querySelector("#rate").textContent = rate;
+            caption.querySelector("#material").textContent = material;
+            
+            // WhatsApp Inquiry with Site URL (Deep Link)
+            const inquiryBtn = caption.querySelector(".inquiry-btn");
+            const baseUrl = window.location.origin + window.location.pathname;
+            const deepLink = `${baseUrl}?id=${id}`;
+            const whatsappMsg = encodeURIComponent(`Hello Shiva Enterprises, I'm interested in this design: ${deepLink}\n\nDetails: ${name}`);
+            inquiryBtn.onclick = () => window.open(`https://wa.me/918707087053?text=${whatsappMsg}`, '_blank');
+
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
         }
-        document.getElementsByClassName("close")[0].onclick = function () {
-            document.getElementById("modal").style.display = "none";
+
+        // Auto-open modal from URL parameter
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (productId) {
+                // Wait for data to load from Firestore (triggered in script.js)
+                const checkInterval = setInterval(() => {
+                    const findInModule = window.getDesignById; // We'll add this to script.js
+                    if (window.imageData && window.imageData.length > 0) {
+                        const item = window.imageData.find(d => d.id === productId);
+                        if (item) {
+                            openFullScreen(item.imageUrl, item.title, item.rate, item.material, item.id);
+                        }
+                        clearInterval(checkInterval);
+                    }
+                }, 500);
+            }
+        });
+
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            const modalVid = document.getElementById("modal-video");
+            modal.classList.remove("active");
+            modalVid.pause();
+            modalVid.src = "";
+            document.body.style.overflow = "auto";
+            
+            // Clear URL parameter without reloading
+            const url = new URL(window.location);
+            url.searchParams.delete('id');
+            window.history.replaceState({}, '', url);
         }
 
-        // Close the modal when the user clicks anywhere outside of the modal
+        document.querySelector(".close-btn").onclick = closeModal;
+
         window.onclick = function (event) {
-            var modal = document.getElementById("modal");
-            if (event.target == modal) {
-                modal.style.display = "none";
+            const modal = document.getElementById("modal");
+            if (event.target == modal.querySelector('.modal-overlay')) {
+                closeModal();
             }
         }
-
     </script>
+
+
     <script src="script.js" type="module"></script>
-    <!-- <script src="testScript.js" type="module"></script> -->
 </body>
 
 </html>
+
 

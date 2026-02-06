@@ -2,56 +2,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiva Enterprises | Admin Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="admin.css">
-    <title>Admin</title>
 </head>
 <body>
-    <h1>Admin Panel</h1>
-    <form id="imageForm">
-        <!-- <label for="uid">UID:</label>
-        <input type="text" id="uid" name="uid"><br><br> -->
-
-        <label for="name">Title:</label>
-        <input type="text" id="title" name="title"><br><br>
-
-        <label for="imageUrl">Image URL:</label>
-        <input type="text" id="imageUrl" name="imageUrl"><br><br>
-        <label for="imageUpload">Image Upload:</label>
-<input type="file" id="imageUpload" accept="image/*" name="imageUpload" multiple><br><br>
-
-
-
-        <label for="rate">Rate:</label>
-        <input type="text" id="rate" name="rate"><br><br>
-
-        <label for="material">Material:</label>
-        <input type="text" id="material" name="material"><br><br>
-        
-        <label for="keywords">Keywords:</label>
-        <div class="keyword-section">
-            <div class="selected-keywords" id="selectedKeywords"></div>
-            <div class="keyword-select">
-              <select id="keywordOptions">
-                <option value="msgate">M/S Gate</option>
-                <option value="mssingledoor">M/S Single door</option>
-                <option value="msrailing">M/S Railing</option>
-                <option value="msgrill">M/S Grill</option>
-                <option value="ssgate">SS Gate</option>
-                <option value="sssingledoor">SS Single door</option>
-                <option value="ssrailing">SS Railing</option>
-                <option value="ssgrill">SS Grill</option>
-              </select>
-              <button id="addKeywordBtn" type="button">Add Keyword</button>
+    <div class="admin-wrapper">
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>Admin Dashboard</h1>
+                <a href="../index.html" class="home-link"><i class="ri-home-line"></i> <p>View Site</p></a>
             </div>
-          </div>
+        </header>
 
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description"><br><br>
+        <main class="admin-main">
+            <section class="admin-section upload-section">
+                <div class="section-header">
+                    <h2><i class="ri-upload-cloud-2-line"></i> New Fabrication Design</h2>
+                    <p>Add a new design to your website's collection.</p>
+                </div>
+                <form id="imageForm" class="admin-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="title">Design Title</label>
+                            <input type="text" id="title" name="title" placeholder="e.g. Modern Lattice Gate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rate">Rate Details</label>
+                            <input type="text" id="rate" name="rate" placeholder="e.g. ₹450 / sq ft">
+                        </div>
+                        <div class="form-group">
+                            <label for="material">Primary Material</label>
+                            <input type="text" id="material" name="material" placeholder="e.g. Mild Steel / Stainless Steel">
+                        </div>
+                        <div class="form-group">
+                            <label for="imageUrl">Image URL (Optional)</label>
+                            <input type="text" id="imageUrl" name="imageUrl" placeholder="Paste link here...">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Design Keywords (Filtering)</label>
+                            <div class="keyword-selector">
+                                <div class="selected-keywords" id="selectedKeywords"></div>
+                                <div class="keyword-controls">
+                                    <select id="keywordOptions">
+                                        <option value="msgate">M/S Gate</option>
+                                        <option value="mssingledoor">Single Door</option>
+                                        <option value="msrailing">Railing</option>
+                                        <option value="msgrill">Grill</option>
+                                        <option value="ssgate">SS Gate</option>
+                                        <option value="ssrailing">SS Railing</option>
+                                    </select>
+                                    <button id="addKeywordBtn" type="button" class="accent-btn">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="imageUpload" class="file-label">
+                                <i class="ri-upload-2-line"></i>
+                                <span>Drop Designs Here or Browse</span>
+                                <small>(Supports Images, GIFs, and Videos up to 15s)</small>
+                                <input type="file" id="imageUpload" accept="image/*,image/gif,video/mp4" name="imageUpload" multiple>
+                            </label>
+                            <div id="file-list-preview" class="file-list-preview"></div>
+                        </div>
 
-        <button type="submit" id="send">Submit</button>
-    </form>
+                    </div>
+                    <button type="submit" id="send" class="submit-btn">Publish Design</button>
+                </form>
+            </section>
+
+            <section class="admin-section management-section">
+                <div class="section-header">
+                    <h2><i class="ri-grid-fill"></i> Manage Collection</h2>
+                    <p>Search, filter, and remove existing designs.</p>
+                </div>
+                
+                <div class="management-controls">
+                    <div class="search-box">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="adminSearch" placeholder="Search designs by title...">
+                    </div>
+                    <div class="filter-box">
+                        <select id="adminFilter">
+                            <option value="all">All Categories</option>
+                            <option value="msgate">M/S Gate</option>
+                            <option value="mssingledoor">Single Door</option>
+                            <option value="msrailing">Railing</option>
+                            <option value="msgrill">Grill</option>
+                            <option value="ssgate">SS Gate</option>
+                            <option value="ssrailing">SS Railing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="admin-gallery" class="admin-gallery">
+                    <!-- Managed images will appear here -->
+                    <div class="loading-state">Loading inventory...</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal-admin">
+        <div class="modal-content-admin">
+            <div class="modal-header">
+                <h3>Edit Design Details</h3>
+                <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            </div>
+            <form id="editForm" class="admin-form">
+                <input type="hidden" id="edit-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="edit-title">Design Title</label>
+                        <input type="text" id="edit-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-rate">Rate Details</label>
+                        <input type="text" id="edit-rate">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-material">Primary Material</label>
+                        <input type="text" id="edit-material">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Update Keywords</label>
+                        <div class="keyword-selector">
+                            <div class="selected-keywords" id="edit-selectedKeywords"></div>
+                            <div class="keyword-controls">
+                                <select id="edit-keywordOptions">
+                                    <option value="msgate">M/S Gate</option>
+                                    <option value="mssingledoor">Single Door</option>
+                                    <option value="msrailing">Railing</option>
+                                    <option value="msgrill">Grill</option>
+                                    <option value="ssgate">SS Gate</option>
+                                    <option value="ssrailing">SS Railing</option>
+                                </select>
+                                <button id="edit-addKeywordBtn" type="button" class="accent-btn">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="submit-btn accent">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="admin.js" type="module"></script>
 </body>
 </html>
+
+

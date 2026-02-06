@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js';
-import { getFirestore, getDocs, collection, addDoc, orderBy, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js';
+import { getFirestore, getDocs, collection } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -12,95 +12,55 @@ const firebaseConfig = {
     measurementId: "G-BDC7WBZLQS"
 };
 
-
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
+let imageData = [];
 
-// Function to retrieve image data from Firestore
-var imageData = [];
-var clutter = "";
 async function getImageData() {
-    const imageContainer = document.getElementById('Container');
+    console.log("Fetching images from Firestore...");
     const imagesRef = collection(db, 'images');
-    const querySnapshot = await getDocs(imagesRef);
-    querySnapshot.forEach((doc) => {
-        imageData.push(doc.data());
-    });
 
-    return imageData;
+    try {
+        const querySnapshot = await getDocs(imagesRef);
+        imageData = [];
+        querySnapshot.forEach((doc) => {
+            imageData.push({ id: doc.id, ...doc.data() });
+        });
+        console.log("Found " + imageData.length + " images.");
+        return imageData;
+    } catch (error) {
+        console.error("Error getting documents: ", error);
+        return [];
+    }
 }
 
 
-// Call the function to get the image data
-getImageData().then((imageData) => {
-    // console.log('Image data:', imageData);
-    showTheCards();
-
-}).catch((error) => {
-    console.error('Error fetching image data:', error);
-});
-
-function showTheCards() {
-    // console.log("Entered Show");
-    var clutter = "";
-    imageData.forEach(function (obj) {
-        // console.log(obj);
-        clutter += `<div class="box">
-        <div class="inner-box">
-        <img class="cursor-pointer" src="${obj.imageUrl}" alt="image" onclick="openFullScreen('${obj.imageUrl}', '${obj.title}', '${obj.rate}', '${obj.material}')"  loading="lazy">
-        <div class="caption">
-            <div class="profile">Rishabh Sharma</div>
-           <i onclick="bookmark()" class="ri-bookmark-line"></i>
-        </div>
-        </div>
-        
-    </div>`;
-    })
-
-    document.querySelector(".container")
-        .innerHTML = clutter;
-}
-
-// Function to filter images based on material type and display them
-// Function to filter images based on material type and display them
-function filterImagesByMaterial(filterValue) {
-    let clutter = "";
-
-    imageData.forEach(function (obj) {
-        if (!obj.keyword) {
-            console.warn("Keyword is undefined for the object:", obj);
-            return;
-        }
-
-        if (Array.isArray(obj.keyword)) {
-            // If 'keyword' is an array, check if any keyword matches the filter
-            const isMatch = obj.keyword.some(kw => kw.toLowerCase().includes(filterValue.toLowerCase()));
-
-            if (isMatch) {
-                clutter += generateCardHTML(obj);
-            }
-        } else if (typeof obj.keyword === "string") {
-            // If 'keyword' is a string, check directly
-            if (obj.keyword.toLowerCase().includes(filterValue.toLowerCase())) {
-                clutter += generateCardHTML(obj);
-            }
-        }
-    });
-
-    document.querySelector(".container").innerHTML = clutter;
-}
-
-// Function to generate the card HTML
 function generateCardHTML(obj) {
+    if (!obj || !obj.imageUrl) {
+        console.warn("Skipping invalid image object:", obj);
+        return "";
+    }
+
+    // Sanitize values for inline JS if they exist
+    const safeTitle = (obj.title || 'Premium Design').replace(/'/g, "\\'");
+    const safeRate = (obj.rate || '').toString().replace(/'/g, "\\'");
+    const safeMaterial = (obj.material || '').toString().replace(/'/g, "\\'");
+    const safeUrl = obj.imageUrl.replace(/'/g, "\\'");
+
+    const isVideo = obj.type === 'video' || safeUrl.toLowerCase().includes('.mp4');
+
+    const mediaHTML = isVideo
+        ? `<video src="${obj.imageUrl}" muted autoplay loop playsinline onerror="this.parentElement.innerHTML='<p style=\'padding:20px; text-align:center; color:var(--text-dim);\'>Video unavailable</p>'"></video>`
+        : `<img src="${obj.imageUrl}" alt="${obj.title || 'Metal Work'}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x600?text=Image+Not+Found'">`;
+
     return `
         <div class="box">
-            <div class="inner-box">
-                <img class="cursor-pointer" src="${obj.imageUrl}" alt="image" onclick="openFullScreen('${obj.imageUrl}', '${obj.title}', '${obj.rate}', '${obj.material}')">
+            <div class="inner-box" onclick="openFullScreen('${safeUrl}', '${safeTitle}', '${safeRate}', '${safeMaterial}', '${obj.id}')">
+                ${mediaHTML}
                 <div class="caption">
-                    <div class="profile">Rishabh Sharma</div>
-                    <i onclick="bookmark()" class="ri-bookmark-line"></i>
+                    <div class="profile">${obj.title || 'Premium Design'}</div>
+                    <i class="ri-expand-diagonal-line"></i>
                 </div>
             </div>
         </div>
@@ -108,26 +68,59 @@ function generateCardHTML(obj) {
 }
 
 
-// Event listeners for filter buttons
-document.querySelectorAll('.filter-btn').forEach(function (button) {
-    button.addEventListener('click', function () {
-        // Remove 'active' class from all buttons
-        document.querySelectorAll('.filter-btn').forEach(function (btn) {
-            btn.classList.remove('active');
-        });
-        // Add 'active' class to the clicked button
-        button.classList.add('active');
-        
-        // Get the filter value
-        const filterValue = button.getAttribute('data-filter');
 
-        // Filter images based on the selected material type
-        if (filterValue === 'all') {
-            // Show all images
-            showTheCards();
-        } else {
-            // Filter images based on material type
-            filterImagesByMaterial(filterValue);
-        }
+function showTheCards(data = imageData) {
+    const container = document.getElementById("Rishabhpapa");
+    if (!container) {
+        console.error("Gallery container #Rishabhpapa not found!");
+        return;
+    }
+
+    if (data.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-dim);">No images found in your collection.</div>';
+        return;
+    }
+
+    const clutter = data.map(obj => generateCardHTML(obj)).join('');
+    container.innerHTML = clutter;
+    window.imageData = data; // Ensure global access for deep-linking
+    console.log("Rendered cards to UI.");
+}
+
+// Filter logic
+function filterImages(filterValue) {
+    if (filterValue === 'all') {
+        showTheCards(imageData);
+        return;
+    }
+
+    const filteredData = imageData.filter(obj => {
+        if (!obj.keyword) return false;
+        const keywords = Array.isArray(obj.keyword) ? obj.keyword : [obj.keyword];
+        return keywords.some(kw => kw.toLowerCase().includes(filterValue.toLowerCase()));
+    });
+
+    showTheCards(filteredData);
+}
+
+// Initialize
+getImageData().then(() => {
+    showTheCards();
+}).catch((error) => {
+    console.error('Error fetching image data:', error);
+});
+
+// Event listeners
+document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        filterImages(this.getAttribute('data-filter'));
     });
 });
+
+// Global stubs for HTML inline event handlers if any remain
+// Global exposure for deep-linking support
+window.imageData = imageData;
+
+
